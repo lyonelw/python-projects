@@ -45,7 +45,6 @@ while running:
                 pixel_set = set()
     if placing:
         x,y = pygame.mouse.get_pos()
-        pixels.append((x//pixel_size*pixel_size, y//pixel_size*pixel_size))
         if color_scheme == "color":
             colors.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         elif color_scheme == "gray":
@@ -53,7 +52,9 @@ while running:
             colors.append((gray, gray, gray))
         else:
             colors.append(color_scheme)
-        pixel_set.add((x//pixel_size*pixel_size, y//pixel_size*pixel_size))
+        if ((x//pixel_size*pixel_size, y//pixel_size*pixel_size)) not in pixel_set:
+            pixels.append((x//pixel_size*pixel_size, y//pixel_size*pixel_size))
+            pixel_set.add((x//pixel_size*pixel_size, y//pixel_size*pixel_size))
     for i in range(width//pixel_size):
         pygame.draw.line(screen, (20, 20, 20), (i* pixel_size-1, 0), (i*pixel_size-1, height))
     for i in range(height//pixel_size):
@@ -126,4 +127,5 @@ while running:
     text = font.render(f"gen {generation}", True, (255, 255, 255))
     screen.blit(text, (10, 10))
     pygame.display.flip()
+
     clock.tick(fps)
